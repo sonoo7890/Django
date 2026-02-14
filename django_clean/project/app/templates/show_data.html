@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+    <title>Show Data</title>
+{% endblock title %}
+
+{% comment %} 
+{% block content %} {% endcomment %}
+
+{{data}}
+
+{% for i in data %}
+
+    <p>{{ i.name }}</p>
+    <p>{{ i.email }}</p>
+    <p>{{ i.contact }}</p>
+    <p>{{ i.qualification }}</p>
+    <p>{{ i.gender }}</p>
+    <p>{{ i.state }}</p>
+
+
+    {{data}} <br/>
+    {{data.name}} <br/>
+    {{data.email}} <br/>
+    
+{% endfor %}
+
+
+    
+    {{data}} <br/>
+    {{data.name}} <br/>
+    {{data.email}} <br/>
+
+    {% block content %}
+
+<div class="container mt-4">
+  <table class="table table-dark">
+    <thead>
+      <tr>
+        <th>S.No</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Contact</th>
+        <th>Qualification</th>
+        <th>State</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% if data  %}
+     {% for i in data %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ i.name }}</td>
+        <td>{{ i.email }}</td>
+        <td>{{ i.contact }}</td>
+        <td>{{ i.qualification }}</td>
+        <td>{{ i.state }}</td>
+      </tr>
+      {% endfor %}
+      {% else %}
+      <tr>
+        <td colspan="6" class="text-danger text-center">No data found</td>
+      </tr>
+{% endif %}
+    </tbody>
+
+  </table>
+</div>
+
+{% endblock %}

@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+
+
+
+{% block title %}
+    <title>Register</title>
+{% endblock title %}
+
+
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white text-center">
+                        {{msg}}
+                        {{signup}}
+                        <h4>Registration Form</h4>
+                    </div>
+
+                    <div class="card-body">
+                        <form method="POST"action="{% url 'register' %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <!-- Name -->
+                            <div class="mb-3">
+                                <label class="form-label">Name</label>
+                                <input type="text" name="name" class="form-control" placeholder="Enter your name">
+                            </div>
+
+                            <!-- Email -->
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" name="email" class="form-control" placeholder="Enter your email">
+                            </div>
+
+                            <!-- Contact -->
+                            <div class="mb-3">
+                                <label class="form-label">Contact</label>
+                                <input type="tel" name="contact" class="form-control" placeholder="Enter contact number">
+                            </div>
+
+                            <!-- Image -->
+                            <div class="mb-3">
+                                <label class="form-label">Upload Image</label>
+                                <input type="file" name="image" class="form-control" accept="image/*">
+                            </div>
+
+                            <!-- Audio -->
+                            <div class="mb-3">
+                                <label class="form-label">Upload Audio</label>
+                                <input type="file" name="audio" class="form-control" accept="audio/*">
+                            </div>
+
+                            <!-- Video -->
+                            <div class="mb-3">
+                                <label class="form-label">Upload Video</label>
+                                <input type="file" name="video" class="form-control" accept="video/*">
+                            </div>
+
+                            <!-- Document -->
+                            <div class="mb-3">
+                                <label class="form-label">Upload Document</label>
+                                <input type="file" name="document" class="form-control" accept=".pdf,.doc,.docx">
+                            </div>
+
+                          <!-- Qualification (Checkbox) -->
+                            <div class="mb-3">
+                                <label class="form-label">Qualification</label><br>
+
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input"
+                                        type="checkbox"
+                                        name="qualification[]"
+                                        id="qual10"
+                                        value="10th">
+                                    <label class="form-check-label" for="qual10">10th</label>
+                                </div>
+
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input"
+                                        type="checkbox"
+                                        name="qualification[]"
+                                        id="qual12"
+                                        value="12th">
+                                    <label class="form-check-label" for="qual12">12th</label>
+                                </div>
+
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox"
+                                        name="qualification[]"
+                                        id="qualGrad"
+                                        value="Graduation">
+                                    <label class="form-check-label" for="qualGrad">Graduation</label>
+                                </div>
+                            </div>
+
+                            <!-- Gender (Radio) -->
+                            <div class="mb-3">
+                                <label class="form-label">Gender</label><br>
+
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input"
+                                        type="radio"
+                                        name="gender"
+                                        id="male"
+                                        value="Male">
+                                    <label class="form-check-label" for="male">Male</label>
+                                </div>
+
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input"
+                                        type="radio"
+                                        name="gender"
+                                        id="female"
+                                        value="Female">
+                                    <label class="form-check-label" for="female">Female</label>
+                                </div>
+                            </div>
+
+
+                            <!-- State (Dropdown) -->
+                            <div class="mb-3">
+                                <label class="form-label">State</label>
+                                <select class="form-select" name="state">
+                                    <option selected>Select State</option>
+                                    <option>Madhya Pradesh</option>
+                                    <option>Uttar Pradesh</option>
+                                    <option>Maharashtra</option>
+                                    <option>Rajasthan</option>
+                                    <option>Delhi</option>
+                                </select>
+                            </div>
+                            <!-- Password -->
+                            <div class="mb-3">
+                                <label class="form-label">Password</label>
+                                <input type="password" name="password" class="form-control">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Conform Password</label>
+                                <input type="password" name="cpassword" class="form-control">
+                            </div>
+                            <!-- Submit Button -->
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-success">
+                                    Register
+                                </button>
+                                <a href="{% url 'login' %}">Login</a>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+    

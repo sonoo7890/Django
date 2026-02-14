@@ -1,0 +1,14 @@
+<form action="{% url 'send_otp' %}" method="POST">
+{% csrf_token %}
+
+    <h1> Django Email Service</h1>
+ 
+   
+   Enter Email<input type="text" name="email"><br> <br>
+    
+
+    <button type="submit">send_otp</button> <br><br>
+    
+    {{msg}}
+    
+</form>

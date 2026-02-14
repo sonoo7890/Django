@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Register</title>
+{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4>Registration Form</h4>
+                </div>
+
+                <div class="card-body">
+
+                    {% if msg %}
+                        <div class="alert alert-danger">{{ msg }}</div>
+                    {% endif %}
+                    {% if signup %}
+                        <div class="alert alert-success">{{ signup }}</div>
+                    {% endif %}
+
+                    <form method="POST" action="{% url 'register' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <!-- Name -->
+                        <div class="mb-3">
+                            <label>Name</label>
+                            <input type="text" name="name" class="form-control" required>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label>Email</label>
+                            <input type="email" name="email" class="form-control" required>
+                        </div>
+
+                        <!-- Contact -->
+                        <div class="mb-3">
+                            <label>Contact</label>
+                            <input type="text" name="contact" class="form-control" required>
+                        </div>
+
+                        <!-- Image -->
+                        <div class="mb-3">
+                            <label>Upload Image</label>
+                            <input type="file" name="image" class="form-control">
+                        </div>
+
+                        <!-- Audio -->
+                        <div class="mb-3">
+                            <label>Upload Audio</label>
+                            <input type="file" name="audio" class="form-control">
+                        </div>
+
+                        <!-- Video -->
+                        <div class="mb-3">
+                            <label>Upload Video</label>
+                            <input type="file" name="video" class="form-control">
+                        </div>
+
+                        <!-- Document -->
+                        <div class="mb-3">
+                            <label>Upload Document</label>
+                            <input type="file" name="document" class="form-control">
+                        </div>
+
+                        <!-- Qualification -->
+                        <div class="mb-3">
+                            <label>Qualification</label><br>
+                            <input type="checkbox" name="qualification" value="10th"> 10th
+                            <input type="checkbox" name="qualification" value="12th"> 12th
+                            <input type="checkbox" name="qualification" value="Graduation"> Graduation
+                        </div>
+
+                        <!-- Gender -->
+                        <div class="mb-3">
+                            <label>Gender</label><br>
+                            <input type="radio" name="gender" value="Male" required> Male
+                            <input type="radio" name="gender" value="Female"> Female
+                        </div>
+
+                        <!-- State -->
+                        <div class="mb-3">
+                            <label>State</label>
+                            <select name="state" class="form-select" required>
+                                <option value="" disabled selected>Select State</option>
+                                <option>Madhya Pradesh</option>
+                                <option>Uttar Pradesh</option>
+                                <option>Maharashtra</option>
+                                <option>Rajasthan</option>
+                                <option>Delhi</option>
+                            </select>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="mb-3">
+                            <label>Password</label>
+                            <input type="password" name="password" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Confirm Password</label>
+                            <input type="password" name="cpassword" class="form-control" required>
+                        </div>
+
+                        <div class="d-grid">
+                            <button class="btn btn-success">Register</button>
+                        </div>
+
+                        <div class="text-center mt-3">
+                            <a href="{% url 'login' %}">Already have account? Login</a>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock content %}

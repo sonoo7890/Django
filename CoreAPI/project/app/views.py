@@ -1,0 +1,244 @@
+from django.shortcuts import render
+from django.http import HttpResponse,JsonResponse
+from.models import Employee
+import json
+from django.forms.models import model_to_dict
+
+# Create your views here.
+def emp_list(req):
+    emp=Employee.objects.all()
+    print(emp.values())
+    p_emp_data=list(emp.values())
+    print(p_emp_data)
+    j_data=json.dumps(p_emp_data)
+    print(j_data)
+    return HttpResponse(j_data,content_type='application/json')
+
+#  return JsonResponse(p_emp_data,safe=False)
+
+def details(req,pk):
+    emp=Employee.objects.get(id=pk)
+    print(emp)
+    p_data=model_to_dict(emp)
+    # print(p_data)
+    # j_data=json.dumps(p_data)
+    # print(j_data)
+    # return HttpResponse(j_data,content_type='application/json')
+    return JsonResponse(p_data,safe=False)
+
+
+
+from django.shortcuts import render
+from django.http import HttpResponse,JsonResponse
+from .models import Employee
+import json
+from django.forms.models import model_to_dict
+from django.views.decorators.csrf import csrf_exempt
+# Create your views here.
+@csrf_exempt
+def emp_list(req):
+    if req.method =="POST":
+        j_data = req.body
+        print(j_data)
+        print(type(j_data))
+        p_data= json.loads(j_data)
+        print(p_data)
+        print(type(p_data))
+        n= p_data.get('name')
+        a= p_data.get('age')
+        c= p_data.get('city')
+        if 'name' in p_data and 'age' in p_data and 'city' in p_data:
+            Employee.objects.create(name=n,age=a,city=c)
+            d = {
+                'msg': 'Object created successfully'
+            }
+            j_data = json.dumps(d)
+            return HttpResponse(j_data,content_type='application/json')
+        else:
+            d = {
+                'msg': 'Some required field values are not found'
+            }
+            j_data = json.dumps(d)
+            return HttpResponse(j_data,content_type='application/json')
+    emp = Employee.objects.all()
+    # print(emp.values())
+    p_emp_data = list(emp.values())
+    # print(p_emp_data)
+    j_data= json.dumps(p_emp_data)
+    # print(j_data)
+    return HttpResponse(j_data,content_type='application/json')
+
+    # return JsonResponse(p_emp_data,safe=False)
+
+@csrf_exempt
+def deatils(req,pk):
+    if req.method =="PUT":
+        j_data = req.body
+        print(j_data)
+        print(type(j_data))
+        p_data= json.loads(j_data)
+        print(p_data)
+        print(type(p_data))
+        if 'name' in p_data and 'age' in p_data and 'city' in p_data:
+            old_data = Employee.objects.get(id=pk)
+            old_data.name = p_data.get('name')
+            old_data.age = p_data.get('age')
+            old_data.city = p_data.get('city')
+            old_data.save()
+            d = {
+                'msg': 'Object updated successfully'
+            }
+            j_data = json.dumps(d)
+            return HttpResponse(j_data,content_type='application/json')
+        else:
+            d = {
+                'msg': 'All fields are required'
+            }
+            j_data = json.dumps(d)
+            return HttpResponse(j_data,content_type='application/json')
+    
+    elif req.method =="PATCH":
+        j_data = req.body
+        print(j_data)
+        print(type(j_data))
+        p_data= json.loads(j_data)
+        print(p_data)
+        print(type(p_data))
+        old_data = Employee.objects.get(id=pk)
+        if 'name' in p_data:
+            old_data.name = p_data.get('name')
+        if 'age' in p_data:
+            old_data.age = p_data.get('age')
+        if 'city' in p_data:
+            old_data.city = p_data.get('city')
+        old_data.save()
+        d = {
+                'msg': 'Object partially updated successfully'
+            }
+        j_data = json.dumps(d)
+        return HttpResponse(j_data,content_type='application/json')
+    
+    elif req.method =="DELETE":
+        old_data = Employee.objects.get(id=pk)
+        old_data.delete()
+        d = {
+                'msg': 'Object Deleted successfully'
+            }
+        j_data = json.dumps(d)
+        return HttpResponse(j_data,content_type='application/json')
+    
+    emp = Employee.objects.get(id=pk)
+    print(emp)
+    p_data = model_to_dict(emp)
+    # print(p_data)
+    # j_data= json.dumps(p_data)
+    # print(j_data)
+    # return HttpResponse(j_data,content_type='application/json')
+    return JsonResponse(p_data,safe=False)
+
+
+
+
+
+
+
+@csrf_exempt
+def employee(req):
+    j_data =req.body
+    if j_data:
+        p_data=json.loads(j_data)
+
+        if 'id' in p_data:
+            id_in_db = Employee.objects.filter(id = p_data.get('id'))
+            if id_in_db:
+                if req.method =="PUT":
+                    if 'name' in p_data and 'age' in p_data and 'city' in p_data:
+                        old_data = Employee.objects.get(id=p_data.get('id'))
+                        old_data.name = p_data.get('name')
+                        old_data.age = p_data.get('age')
+                        old_data.city = p_data.get('city')
+                        old_data.save()
+                        d = {
+                            'msg': 'Object updated successfully'
+                        }
+                        j_data = json.dumps(d)
+                        return HttpResponse(j_data,content_type='application/json')
+                    else:
+                        d = {
+                            'msg': 'All fields are required'
+                        }
+                        j_data = json.dumps(d)
+                        return HttpResponse(j_data,content_type='application/json')
+                
+                elif req.method == "PATCH":
+                    old_data = Employee.objects.get(id=p_data.get('id'))
+                    if 'name' in p_data:
+                        old_data.name = p_data.get('name')
+                    if 'age' in p_data:
+                        old_data.age = p_data.get('age')
+                    if 'city' in p_data:
+                        old_data.city = p_data.get('city')
+                    old_data.save()
+                    d = {
+                            'msg': 'Object partially updated successfully'
+                        }
+                    j_data = json.dumps(d)
+                    return HttpResponse(j_data,content_type='application/json')
+
+                elif req.method == "DELETE":
+                    old_data = Employee.objects.get(id=p_data.get('id'))
+                    old_data.delete()
+                    d = {
+                            'msg': 'Object Deleted successfully'
+                        }
+                    j_data = json.dumps(d)
+                    return HttpResponse(j_data,content_type='application/json')
+                
+                emp_data = Employee.objects.get(id=p_data.get('id'))
+                p_data = model_to_dict(emp_data)
+                print(p_data)
+                j_data= json.dumps(p_data)
+                print(j_data)
+                return HttpResponse(j_data,content_type='application/json')
+                # return JsonResponse(p_data,safe=False)
+            else:
+                d = {
+                            'msg': 'Id not present in DB'
+                        }
+                j_data = json.dumps(d)
+                return HttpResponse(j_data,content_type='application/json')
+
+        else:
+            if req.method =="POST":
+                n= p_data.get('name')
+                a= p_data.get('age')
+                c= p_data.get('city')
+                if 'name' in p_data and 'age' in p_data and 'city' in p_data:
+                    Employee.objects.create(name=n,age=a,city=c)
+                    d = {
+                        'msg': 'Object created successfully'
+                    }
+                    j_data = json.dumps(d)
+                    return HttpResponse(j_data,content_type='application/json')
+                else:
+                    d = {
+                        'msg': 'Some required field values are not found'
+                    }
+                    j_data = json.dumps(d)
+                    return HttpResponse(j_data,content_type='application/json')
+            emp = Employee.objects.all()
+            # print(emp.values())
+            p_emp_data = list(emp.values())
+            # print(p_emp_data)
+            j_data= json.dumps(p_emp_data)
+            # print(j_data)
+            return HttpResponse(j_data,content_type='application/json')
+
+    else:
+        emp = Employee.objects.all()
+        # print(emp.values())
+        p_emp_data = list(emp.values())
+        # print(p_emp_data)
+        j_data= json.dumps(p_emp_data)
+        # print(j_data)
+        return HttpResponse(j_data,content_type='application/json')

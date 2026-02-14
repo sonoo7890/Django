@@ -1,0 +1,557 @@
+{% block title %}
+<title>userdashboard</title>
+{% endblock title %}
+
+{% block contant %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Dashboard</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+/* ========== BACKGROUND ========== */
+body {
+  min-height: 100vh;
+  background: url('/static/images/background dashboard.avif') no-repeat center center fixed;
+  background-size: cover;
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+}
+
+/* ========== GLASS CONTENT ========== */
+.glass {
+  background: rgba(255, 255, 255, 0.75); /* LIGHT GLASS */
+  backdrop-filter: blur(14px);
+  border-radius: 18px;
+  color: #0f172a;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+/* ========== SIDEBAR (DARK GLASS) ========== */
+.sidebar {
+  height: 100vh;
+  position: fixed;
+  width: 240px;
+  padding: 20px 12px;
+  background: rgba(2, 34, 90, 0.75); /* 🔥 DARK BLUE GLASS */
+  backdrop-filter: blur(18px);
+  box-shadow: 6px 0 25px rgba(0,0,0,0.35);
+}
+
+/* SIDEBAR LINKS */
+.sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 18px;
+  color: #e0e7ff; /* LIGHT TEXT */
+  text-decoration: none;
+  font-weight: 500;
+  border-radius: 14px;
+  margin: 8px 6px;
+  transition: all 0.25s ease;
+}
+
+/* HOVER & ACTIVE */
+.sidebar a:hover,
+.sidebar a.active {
+  background: linear-gradient(90deg, #2563eb, #38bdf8); /* 🔥 CLEAR COLOR CHANGE */
+  color: #ffffff;
+  transform: translateX(6px);
+}
+
+/* ========== MAIN CONTENT ========== */
+.main-content {
+  margin-left: 270px;
+  padding: 36px;
+}
+
+/* ========== PROFILE IMAGE ========== */
+.profile-img {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #38bdf8; /* 🔥 BRIGHT BORDER */
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+/* ========== INFO TEXT ========== */
+.info-label {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.info-value {
+  font-size: 17px;
+  font-weight: 600;
+  color: #0f172a;
+}
+</style>
+
+    
+
+
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar glass shadow-lg">
+    <div class="text-center mb-4">
+    {% if data.image %}
+        <img src="{{ data.image.url }}" class="profile-img mb-2">
+    {% else %}
+
+        <div class="profile-img mb-2 d-block mx-auto" style="background-color:#ffff;"></div>
+    {% endif %}
+    <h5>{{ data.name }}</h5>
+    {% comment %} <p>{{ data.email }}</p> {% endcomment %}
+</div>
+
+
+
+    <a href="{% url 'profile' %}"
+       class="{% if section == 'profile' %}active{% endif %}">
+       Profile
+    </a>
+
+    <a href="{% url 'query' %}"
+       class="{% if section == 'query' %}active{% endif %}">
+       Query
+    </a>
+
+    <a href="{% url 'query_status' %}"
+       class="{% if section == 'query_status' %}active{% endif %}">
+       Query_Status
+    </a>
+
+    <a href="{% url 'all_query' %}"
+       class="{% if section == 'all-query' %}active{% endif %}">
+       All_Query
+    </a>
+
+    <form method="post" action="{% url 'logout' %}" class="mt-4 text-center">
+        {% csrf_token %}
+        <button class="btn btn-dark btn-sm">Logout</button>
+    </form>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+
+    
+    {% if not section %}
+    <div class="glass shadow-lg p-5 text-center">
+        <h3>Welcome {{ data.name }} 👋</h3>
+        {% comment %} <p>Please select any option from sidebar</p> {% endcomment %}
+    </div>
+    {% endif %}
+
+    <!-- PROFILE -->
+{% if profile %}
+<div id="profile" class="section">
+
+    <div class="glass shadow-lg p-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <h3>Profile Information</h3>
+
+            <!-- Buttons -->
+            <div>
+                <a href="?action=edit" class="btn btn-sm btn-primary me-2">
+                    Edit Profile
+                </a>
+                <a href="?action=password" class="btn btn-sm btn-warning">
+                    Change Password
+                </a>
+            </div>
+        </div>
+
+        {% if not action %}
+<div class="row mt-4">
+    <div class="col-md-6">
+        <p><b>Contact:</b> {{ data.contact }}</p>
+    </div>
+    <div class="col-md-6">
+        <p><b>Email:</b> {{ data.email }}</p>
+    </div>
+</div>
+{% endif %}
+
+
+        <div class="row mt-3">
+            <div class="col-md-6 mb-3">
+                <div class="glass p-3">
+                    <div class="info-label">Contact</div>
+                    <div class="info-value">{{ data.contact }}</div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <div class="glass p-3">
+                    <div class="info-label">Email</div>
+                    <div class="info-value">{{ data.email }}</div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <div class="glass p-3">
+                    <div class="info-label">Department</div>
+                    <div class="info-value">{{ data.department}}</div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <div class="glass p-3">
+                    <div class="info-label">Description</div>
+                    <div class="info-value">{{ data.d_des }}</div>
+                </div>
+            </div>
+
+            
+        </div>
+    </div>
+
+</div>
+{% endif %}
+
+{% if action == 'edit' %}
+<hr>
+<h4>Edit Profile</h4>
+
+<form method="post">
+    {% csrf_token %}
+
+    <div class="mb-2">
+        <label>Name</label>
+        <input type="text" name="name" value="{{ data.name }}" class="form-control">
+    </div>
+
+    <div class="mb-2">
+        <label>Contact</label>
+        <input type="text" name="contact" value="{{ data.contact }}" class="form-control">
+    </div>
+
+    <button class="btn btn-success">Update</button>
+    <a href="{% url 'profile' %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endif %}
+
+
+{% if action == 'password' %}
+<hr>
+<h4>Change Password</h4>
+
+<form method="post">
+    {% csrf_token %}
+
+    <div class="mb-2">
+        <input type="password" name="old_password" placeholder="Old Password" class="form-control">
+    </div>
+
+    <div class="mb-2">
+        <input type="password" name="new_password" placeholder="New Password" class="form-control">
+    </div>
+
+    <button class="btn btn-danger">Change Password</button>
+    <a href="{% url 'profile' %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endif %}
+
+
+    <!-- QUERY -->
+
+    {% if msg %}
+<div class="alert alert-success text-center">
+    {{ msg }}
+</div>
+{% endif %}
+
+    {% if query %}
+    <div id="query" class="section">
+         
+        <div class="glass shadow-lg p-4">
+            <h3>Query Form</h3>
+
+            <form method="post" action="{% url 'query_data' %}">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label>Name</label>
+                    <input class="form-control" name="name" value="{{ data.name }}" readonly>
+                </div>
+
+                <div class="mb-3">
+                    <label>Email</label>
+                    <input class="form-control" name="email" value="{{ data.email }}" readonly>
+                </div>
+
+    <label for="subject" class="form-label">Subject</label>
+<select name="subject" id="subject" class="form-select" required>
+    <option value="" disabled selected>Select Subject</option>
+    <option value="attendance">Attendance</option>
+    <option value="salary">Salary</option>
+    <option value="profile">Profile Info</option>
+    <option value="leave">Leave</option>
+</select>
+
+
+
+
+                <div class="mb-3">
+                    <label>Query</label>
+                    <textarea class="form-control" name="query" rows="4" required></textarea>
+                </div>
+
+                <button class="btn btn-primary">Submit Query</button>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- QUERY STATUS -->
+    
+    {% if query_status %}
+
+    <div id="query_status" class="section">
+        <div class="glass shadow-lg p-4">
+            <h3>Query Status</h3>
+
+           <form method="get">
+
+            <!-- 🔍 SEARCH BUTTON (SIDE SE) -->
+<div class="text-end">
+    <button type="submit" class="btn btn-primary">
+        Search
+    </button>
+    <a href="" class="btn btn-secondary">Reset</a>
+</div>
+
+<table class="table table-bordered table-hover mt-3 text-center">
+
+    <thead class="table-dark">
+        <tr>
+            <th>S.No</th>
+            <th>
+                Name <br>
+                <input type="text" name="name" class="form-control form-control-sm mt-1"
+                       placeholder="Search Name">
+            </th>
+
+            <th>
+                Email <br>
+                <input type="text" name="email" class="form-control form-control-sm mt-1"
+                       placeholder="Search Email" readonly>
+            </th>
+
+            <th>
+                Subject <br>
+                <input type="text" name="subject" class="form-control form-control-sm mt-1"
+                       placeholder="Search Subject">
+            </th>
+
+            <th>
+                Query <br>
+                <input type="text" name="query" class="form-control form-control-sm mt-1"
+                       placeholder="Search Query">
+            </th>
+
+            <th>
+                Status <br>
+                <select name="status" class="form-select form-select-sm mt-1">
+                    <option value="">All</option>
+                    <option value="Done">Done</option>
+                    <option value="Pending">Pending</option>
+                </select>
+            </th>
+
+            <th>
+                Solution <br>
+                <input type="text" name="solution" class="form-control form-control-sm mt-1"
+                       placeholder="Search Solution">
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for q in query_status %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ q.name }}</td>
+            <td>{{ q.email }}</td>
+            <td>{{ q.subject }}</td>
+            <td>{{ q.query }}</td>
+            <td>{{ q.status }}</td>
+            <td>{{ q.solution }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="7" class="text-center text-danger fw-bold">
+                No Record Found
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+
+</form>
+
+        </div>
+    </div>
+    {% endif %}
+
+    
+<!-- ALL QUERY -->
+{% if all_query %}
+ 
+
+<div id="all_query" class="section">
+    <div class="glass shadow-lg p-4">
+
+        <!-- Heading + Search -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3>All Query</h3>
+
+             <form action="{% url 'search' %}" method="POST">
+                {% csrf_token %}
+                <input type="search"
+                       name="search"
+                       placeholder="Search"
+                       class="form-control form-control-sm"
+                       style="width:200px;">
+                       <input type="submit" value="Search">
+                       <button><a href="{% url 'reset' %}">Reset</a></button>
+            </form>
+        </div>
+
+        <table class="table table-bordered table-hover text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>S.No</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Query</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+                {% for q in queries %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ q.name }}</td>
+                    <td>{{ q.email }}</td>
+                    <td>{{ q.query }}</td>
+                    <td>
+         {% if q.status|lower == "pending" %}
+        <a href="{% url 'edit' pk=q.id %}"
+           class="btn btn-info btn-sm">
+           Edit
+        </a>
+    {% else %}
+        <button class="btn btn-secondary btn-sm" disabled>
+            Locked
+        </button>
+    {% endif %}
+</td>
+
+
+                    <td>
+                        <a href="{% url 'delete' pk=q.id %}"
+                           class="btn btn-danger btn-sm">
+                           Delete
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">No queries found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+
+<!-- edit query form  -->
+
+{% elif e_query %}
+<div id="query" class="section">
+    <div class="glass shadow-lg p-4"
+         style="background: rgba(173, 216, 230, 0.45);">
+
+        <h3 style="color:#0b4f6c;">
+            ✏️ Update Your Query
+        </h3>
+
+        <p class="small text-muted">
+            You are editing your previously submitted query
+        </p>
+
+        <form method="post" action="{% url 'update' pk=e_query.id %}">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label>Name</label>
+                <input class="form-control"
+                       name="name"
+                       value="{{ e_query.name }}"
+                       >
+            </div>
+
+            <div class="mb-3">
+                <label>Email</label>
+                <input class="form-control"
+                       name="email"
+                       value="{{ e_query.email }}"
+                       >
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Subject</label>
+                <select name="subject" class="form-select" required>
+                    <option value="attendance" {% if e_query.subject == "attendance" %}selected{% endif %}>Attendance</option>
+                    <option value="salary" {% if e_query.subject == "salary" %}selected{% endif %}>Salary</option>
+                    <option value="profile" {% if e_query.subject == "profile" %}selected{% endif %}>Profile Info</option>
+                    <option value="leave" {% if e_query.subject == "leave" %}selected{% endif %}>Leave</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label>Update Query</label>
+                <textarea class="form-control"
+                          name="query"
+                          rows="4"
+                          required>{{ e_query.query }}</textarea>
+            </div>
+
+            <button class="btn btn-info text-white">
+                🔄 Update Query
+            </button>
+
+            <a href="{% url 'all_query' %}"
+               class="btn btn-outline-secondary ms-2">
+                Cancel
+            </a>
+        </form>
+    </div>
+</div>
+{% endif %}
+
+
+
+
+
+</div>
+
+</body>
+</html>
+{% endblock contant %}

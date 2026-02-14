@@ -1,0 +1,210 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row min-vh-100">
+
+        <!-- ===== SIDEBAR ===== -->
+        <div class="col-md-3 col-lg-2 bg-dark text-white p-3">
+            <h4 class="text-center border-bottom pb-2">Admin</h4>
+
+            <button class="btn btn-outline-light w-100 mb-2" onclick="showSection('addDept')">
+                Add Department
+            </button>
+
+            <button class="btn btn-outline-light w-100 mb-2" onclick="showSection('addEmp')">
+                Add Employee
+            </button>
+
+            <button class="btn btn-outline-light w-100 mb-2" onclick="showSection('showDept')">
+                Show All Dept
+            </button>
+
+            <button class="btn btn-outline-light w-100 mb-2" onclick="showSection('showEmp')">
+                Show All Emp
+            </button>
+
+            <button class="btn btn-outline-light w-100 mb-2" onclick="showSection('query')">
+                Show Emp Query
+            </button>
+
+            <hr>
+
+            <a href="{% url 'logout' %}" class="btn btn-danger w-100">
+                Logout
+            </a>
+        </div>
+
+        <!-- ===== CONTENT AREA ===== -->
+         
+        <div class="col-md-9 col-lg-10 p-4 bg-light">
+            {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+            {% endif %}
+<!-- s.no name email contact password department edit delete -->
+            <!-- DEFAULT DASHBOARD -->
+            <div id="dashboardHome">
+                {% if section == 'show_emp' %}
+                     {% include 'show_all_employee.html' %}
+    {% elif section == 'add_emp' %}
+        {% include 'add_employee.html' %}
+    {% else %}
+                <h3>Welcome Admin 👋</h3>
+                
+            <p class="text-muted">Select option from left menu</p>
+                {% endif %}
+            </div>
+
+            <!-- ADD DEPARTMENT -->
+            <div id="addDept" class="d-none">
+                <h4>Add Department</h4>
+                <form class="card p-3 shadow w-50">
+                    <input type="text" class="form-control mb-2" placeholder="Department Name">
+                    <button class="btn btn-success">Save</button>
+                </form>
+            </div>
+
+            
+            
+<!-- ADD EMPLOYEE -->
+
+<div id="addEmp" class="d-none">
+
+    <div class="add-emp-wrapper">
+        <div class="emp-card">
+            <h4 class="text-center mb-4">➕ Add New Employee</h4>
+
+            <form method="POST" action="{% url 'add_employee' %}">
+                {% csrf_token %}
+
+                <div class="form-group mb-3">
+                    <label>Full Name</label>
+                    <input type="text" name="name" class="form-control" placeholder="Enter full name">
+                </div>
+
+                <div class="form-group mb-3">
+                    <label>Email Address</label>
+                    <input type="email" name="email" class="form-control" placeholder="Enter email">
+                </div>
+
+                <div class="form-group mb-3">
+                    <label>Contact Number</label>
+                    <input type="text" name="contact" class="form-control" placeholder="Enter contact number">
+                </div>
+
+                <div class="form-group mb-3">
+                    <label>Password</label>
+                    <input type="password" name="password" class="form-control" placeholder="Create password">
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        Add Employee
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+
+<!-- SHOW DEPARTMENT -->
+            <div id="showDept" class="d-none">
+                <h4>All Departments</h4>
+                <div class="card p-3 shadow">
+                    <p>Department list yahan aayegi</p>
+                </div>
+            </div>
+
+
+
+    <!-- SHOW EMPLOYEE -->
+     <a href="{% url 'show_employee' %}" class="btn btn-outline-light w-100 mb-2">
+    Show All Emp
+    </a>
+
+<div id="showEmp" class="d-none">
+    <h4 class="mb-3">All Employees</h4>
+
+    <div class="card p-3 shadow">
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>S.No</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Contact</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for emp in users %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ emp.name }}</td>
+                    <td>{{ emp.email }}</td>
+                    <td>{{ emp.contact }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center text-muted">
+                        No Employees Found
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+            
+                        
+                        
+                      
+
+
+
+
+            <!-- QUERY -->
+            <div id="query" class="d-none">
+                <h4>Employee Queries</h4>
+                <div class="card p-3 shadow">
+                    <p>Queries yahan show hongi</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+     {% if request.session.emp_success %}
+        showSection('addEmp');
+    {% endif %}
+    function showSection(id) {
+        let sections = [
+            'dashboardHome',
+            'addDept',
+            'addEmp',
+            'showDept',
+            'showEmp',
+            'query'
+        ];
+
+        sections.forEach(section => {
+            document.getElementById(section).classList.add('d-none');
+        });
+
+        document.getElementById(id).classList.remove('d-none');
+    }
+</script>
+
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}All Employees{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+<div class="card shadow">
+    <div class="card-header bg-dark text-white">
+        <h5 class="mb-0">All Employees</h5>
+    </div>
+
+    <div class="card-body">
+       <h3 class="mb-3">Employee List</h3>
+
+<table class="table table-bordered table-dark table-striped">
+    <thead>
+        <tr>
+            <th>S.No</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Contact</th>
+            <th>Password</th>
+            <th>Image</th>
+            <th>Department</th>
+            <th>D_code</th>
+            <th>D_desc</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for emp in employees %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ emp.name }}</td>
+            <td>{{ emp.email }}</td>
+            <td>{{ emp.contact }}</td>
+            <td><span style="color:red;">Hidden</span></td>
+            <td>N/A</td>
+            <td>{{ emp.department }}</td>
+            <td>None</td>
+            <td>None</td>
+            <td>
+                <a href="#" class="btn btn-sm btn-warning">Edit</a>
+                <a href="#" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+ 
+    </div>
+</div>
+
+ {% endblock content %}   

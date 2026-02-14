@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2 class="text-center text-success mb-4">Login</h2>
+
+<form method="post" class="col-md-4 mx-auto card p-4 shadow">
+  {% csrf_token %}
+
+  {% if error %}
+    <div class="alert alert-danger">{{ error }}</div>
+  {% endif %}
+
+  <div class="mb-3">
+    <label>Username</label>
+    <input type="text" name="username" class="form-control" required>
+  </div>
+
+  <div class="mb-3">
+    <label>Password</label>
+    <input type="password" name="password" class="form-control" required>
+  </div>
+
+  <button class="btn btn-success w-100">Login</button>
+<p>New User? <a href="{% url 'signup' %}">Sign Up</a></p>
+  
+</form>
+
+{% endblock %}
