@@ -1,0 +1,11 @@
+<h1>Hello,world !!</h1> 
+{% if msg1 %}
+{{msg}} <br>
+{{msg1}}  <br><br>
+Name:{{data.name}} Email:{{data.email}}
+{% endif %}
+
+<button><a href="{% url 'set' %}">set_data</a></button>
+<button><a href="{% url 'get_data' %}">get_session</a></button>
+
+<button><a href="{% url 'delete_data' %}">delete_session</a></button>
