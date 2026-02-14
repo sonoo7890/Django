@@ -21,9 +21,18 @@ from myapp.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',landing,name='landing'),
+<<<<<<< HEAD
     path('set/',set,name='set'),
     path('set_data/',set_data,name='set_data'),
     path('get_data/',get_data,name='get_data'),
     path('delete_data/',delete_data,name='delete_data'),
 
+=======
+    path('my_home/',my_home,name='my_home'),
+    path('my_about/',my_about,name='my_about'),
+    path('my_contact/',my_contact,name='my_contact'),
+    path('my_services/',my_services,name='my_services'),
+    path('my_registration/',my_registration,name='my_registration'),
+    path('my_login/',my_login,name='my_login'),
+>>>>>>> fdc7b92f5dfacec0c5d5d482cb38ef15f9c80442
 ]

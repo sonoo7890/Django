@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block x %}
+<title> Home Page</title>
+
+{% endblock x %}
+
+{% block content %}
+
+{% comment %}---------------------------------{% endcomment %}
+    
+{{name}}<br />
+{{name|upper}}<br />
+{{name|lower}}<br />
+{{name|title}}<br />
+{{name|capfirst}}<br />
+ 
+ 
+{% comment %}--------------------------------------{% endcomment %}
+    
+{{name|length}}<br />
+{{name|truncatewords:2}}<br />
+{{name|truncatechars:3}}<br />
+
+
+<pre>{{name|center:"150"}} </pre><br />
+<pre>{{name|ljust:"150"}} </pre>
+<pre>{{name|rjust:"150"}} </pre>
+
+{% comment %} ------------------ {% endcomment %}
+welcome :{{name1|default:"Guest"}} <br />
+
+welcome :{{name2|default:"Guest"}}
+
+{% comment %} ----------------------- {% endcomment %}
+
+
+
+
+
+
+{% endblock content %}
