@@ -26,13 +26,15 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
-    path('signup/', views.signup, name='signup'),
+    
     path('products/', views.products, name='products'),
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
     path('business/', views.business, name='business'),
-    path('login/', views.login_view, name='login'),
+    # path('signup/', views.signup, name='signup'),
+    # path('login/', views.login_view, name='login'),
     path('dashboard/', views.dashboard, name='dashboard'),
+    path('booking/', views.booking, name='booking'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

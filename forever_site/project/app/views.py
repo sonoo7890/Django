@@ -1,6 +1,12 @@
 from django.shortcuts import render
 from .models import Product
 from django.shortcuts import render, redirect
+from .forms import SignupForm
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
+
+from django.contrib.auth.forms import UserCreationForm
+
 # Create your views here.
 
 
@@ -16,37 +22,9 @@ def products(req):
 def business(req):
     return render(req, 'bussiness.html')
 
-from django.contrib.auth.forms import UserCreationForm
-from django.shortcuts import render, redirect
-
-def signup(request):
-    if request.method == "POST":
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('login')   # signup ke baad login page
-    else:
-        form = UserCreationForm()
-
-    return render(request, 'signup.html', {'form': form})
-
-
-def login_view(request):
-    error = ""
-    if request.method == "POST":
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-
-        # DEMO LOGIN
-        if username == "admin" and password == "12345":
-            return redirect('dashboard')
-        else:
-            error = "Invalid Username or Password"
-
-    return render(request, 'login.html', {'error': error})
-
-
 def dashboard(request):
     return render(request, 'dashboard.html')
 
 
+def booking(request):
+    return render(request, 'booking.html')
